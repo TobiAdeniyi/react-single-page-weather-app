@@ -1,4 +1,8 @@
-import { getForecastApiUrl, getWeatherApiUrl } from "./ApiUrl";
+import {
+  DEFAULT_PARAMS,
+  getDailyForecastApiUrl,
+  getWeatherApiUrl,
+} from "./ApiUrl";
 import { getIcon } from "./Icon";
 
-export { getForecastApiUrl, getWeatherApiUrl, getIcon };
+export { DEFAULT_PARAMS, getDailyForecastApiUrl, getWeatherApiUrl, getIcon };

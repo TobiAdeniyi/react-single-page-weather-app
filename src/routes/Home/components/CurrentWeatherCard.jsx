@@ -2,7 +2,11 @@ import { Card, CardContent, Typography } from "@mui/material";
 import { Image, ListGroup } from "react-bootstrap";
 import { getIcon } from "../../../utils";
 
-export default function LeftCard({ weatherResponse }) {
+export default function CurrentWeatherCard({
+  tempUnit,
+  windSpeedUnit,
+  weatherResponse,
+}) {
   const date = new Date(weatherResponse.dt * 1_000);
   const dateTimeOptions = {
     weekday: "short",
@@ -23,8 +27,8 @@ export default function LeftCard({ weatherResponse }) {
         </Typography>
         <Image src={getIcon(weatherResponse.weather[0].icon)} />
         <Typography variant="h3" component="div">
-          {weatherResponse.main.temp}
-          <sup>o</sup>C
+          {Math.round(weatherResponse.main.temp)}
+          {tempUnit}
         </Typography>
         <ListGroup className="text-start" component="div">
           <ListGroup.Item key="precipitation">
@@ -37,7 +41,7 @@ export default function LeftCard({ weatherResponse }) {
           </ListGroup.Item>
           <ListGroup.Item key="wind">
             <Typography>
-              Wind Speed: {weatherResponse.wind.speed} mph
+              Wind Speed: {weatherResponse.wind.speed} {windSpeedUnit}
             </Typography>
           </ListGroup.Item>
           <ListGroup.Item key="pressure">
@@ -50,8 +54,8 @@ export default function LeftCard({ weatherResponse }) {
           Today, we will have {weatherResponse.weather[0].description}.
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          Feel like {weatherResponse.main.feels_like}
-          <sup>o</sup>C.
+          Feel like {Math.round(weatherResponse.main.feels_like)}
+          {tempUnit}.
         </Typography>
       </CardContent>
     </Card>
