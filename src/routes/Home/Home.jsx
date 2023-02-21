@@ -1,19 +1,18 @@
 import { useContext } from "react";
+import { Col, Row } from "react-bootstrap";
 import { Container } from "@mui/material";
-
 import { CurrentWeatherCard, EightDayForeCastCard } from "./components";
 import { RouterContext } from "../../App";
-import { Col, Row } from "react-bootstrap";
 
 export default function Home() {
-  const { isMetric, weatherResponse, dailyForecastResponse } =
+  const { isMetric, currentWeatherResponse, dailyForecastResponse } =
     useContext(RouterContext);
 
   // define units
   const tempUnit = `˚${isMetric ? "C" : "F"}`;
   const windSpeedUnit = isMetric ? "m/s" : "mph";
 
-  return !weatherResponse || !dailyForecastResponse ? (
+  return !currentWeatherResponse || !dailyForecastResponse ? (
     <></>
   ) : (
     <Container>
@@ -21,7 +20,7 @@ export default function Home() {
         <CurrentWeatherCard
           tempUnit={tempUnit}
           windSpeedUnit={windSpeedUnit}
-          weatherResponse={weatherResponse}
+          currentWeatherResponse={currentWeatherResponse}
         />
       </Col>
       <br />
