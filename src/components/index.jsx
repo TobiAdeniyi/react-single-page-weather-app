@@ -1,3 +1,4 @@
 import Navbar from "./Navbar";
+import WeatherCard from "./WeatherCard";
 
-export { Navbar };
+export { Navbar, WeatherCard };

@@ -12,7 +12,6 @@ export default function EightDayForecastCard({
     day: "numeric",
   };
   const subtitleDateOptions = { month: "short", day: "numeric" };
-
   return (
     <Card>
       <CardContent>
