@@ -1,5 +1,7 @@
+import * as API_ID_JSON from "../../id.json";
+
 const API_URL = "http://api.openweathermap.org";
-const APP_ID = "d94bcd435b62a031771c35633f9f310a"; // todo: change key
+const APP_ID = API_ID_JSON.api_id;
 
 const BASE_URL = `${API_URL}/data/2.5/`;
 
