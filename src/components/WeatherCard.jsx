@@ -9,6 +9,13 @@ const dateTimeOptions = {
   day: "numeric",
 };
 
+const feelsLikePeriods = [
+  { name: "morning", val: "morn" },
+  { name: "afternoon", val: "day" },
+  { name: "evening", val: "eve" },
+  { name: "night", val: "night" },
+];
+
 export default function WeatherCard({ weatherResponse }) {
   const date = new Date(weatherResponse.date);
   return (
@@ -70,15 +77,13 @@ export default function WeatherCard({ weatherResponse }) {
         )}
         {weatherResponse?.feelsLikeBreakdown && (
           <Typography variant="body2" color="text.secondary">
-            The morning will feel like{" "}
-            {Math.round(weatherResponse.feelsLikeBreakdown?.morn)}{" "}
-            {weatherResponse.tempUnit}. The afternoon will feel like{" "}
-            {Math.round(weatherResponse.feelsLikeBreakdown?.day)}{" "}
-            {weatherResponse.tempUnit}. The evening will feel like{" "}
-            {Math.round(weatherResponse.feelsLikeBreakdown?.eve)}{" "}
-            {weatherResponse.tempUnit}. The midnight will feel like{" "}
-            {Math.round(weatherResponse.feelsLikeBreakdown?.night)}{" "}
-            {weatherResponse.tempUnit}.
+            {feelsLikePeriods.map((period) => (
+              <p>
+                The {period.name} will feel like{" "}
+                {Math.round(weatherResponse.feelsLikeBreakdown?.[period.val])}{" "}
+                {weatherResponse.tempUnit}.
+              </p>
+            ))}
           </Typography>
         )}
       </CardContent>
