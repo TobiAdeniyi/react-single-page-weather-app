@@ -7,6 +7,8 @@ const BASE_URL = `${API_URL}/data/2.5/`;
 
 const API_PARAM_OPTIONS = [
   { apiName: "q", internalName: "city" },
+  { apiName: "lat", internalName: "latitude" },
+  { apiName: "lon", internalName: "longitude" },
   { apiName: "units", internalName: "isMetric" },
   { apiName: "lang", internalName: "language" },
   { apiName: "cnt", internalName: "count" },
@@ -19,8 +21,8 @@ const DEFAULT_PARAMS = {
 };
 
 // helper function
-const getApiUrl = (stub, providedValues) => {
-  const queryStub = API_PARAM_OPTIONS.reduce((result, optionalParam) => {
+const getApiUrl = (route, providedValues) => {
+  const stub = API_PARAM_OPTIONS.reduce((result, optionalParam) => {
     const val = // IF we're looking at units: set value manually (metric or imperial)
       optionalParam.apiName === "units"
         ? providedValues[optionalParam.internalName] // boolean: determin if we use imperial or metric measurment
@@ -29,7 +31,7 @@ const getApiUrl = (stub, providedValues) => {
         : providedValues[optionalParam.internalName]; // ELSE: set value automatically
     return result + (val ? `&${optionalParam.apiName}=${val}` : "");
   }, "");
-  return `${BASE_URL}${stub}?appid=${APP_ID}${queryStub}`;
+  return `${BASE_URL}${route}?appid=${APP_ID}${stub}`;
 };
 
 /*
@@ -50,29 +52,61 @@ const getApiUrl = (stub, providedValues) => {
  */
 
 const getWeatherApiUrl = ({
-  city = DEFAULT_PARAMS.city,
+  city = null,
+  latitude = null,
+  longitude = null,
   isMetric = DEFAULT_PARAMS.isMetric,
   language = DEFAULT_PARAMS.language,
 } = {}) => {
-  return getApiUrl("weather", { city, isMetric, language });
+  return getApiUrl("weather", {
+    ...(longitude && latitude
+      ? { longitude, latitude }
+      : city
+      ? { city }
+      : { city: DEFAULT_PARAMS.city }),
+    isMetric,
+    language,
+  });
 };
 
 const getDailyForecastApiUrl = ({
-  city = DEFAULT_PARAMS.city,
+  city = null,
+  latitude = null,
+  longitude = null,
   isMetric = DEFAULT_PARAMS.isMetric,
   language = DEFAULT_PARAMS.language,
   count = 8, // 8 days of data (e.g. monday - monday)
 } = {}) => {
-  return getApiUrl("forecast/daily", { city, isMetric, language, count });
+  return getApiUrl("forecast/daily", {
+    ...(longitude && latitude
+      ? { longitude, latitude }
+      : city
+      ? { city }
+      : { city: DEFAULT_PARAMS.city }),
+    isMetric,
+    language,
+    count,
+  });
 };
 
 const getHourlyForecastApiUrl = ({
-  city = DEFAULT_PARAMS.city,
+  city = null,
+  latitude = null,
+  longitude = null,
   isMetric = DEFAULT_PARAMS.isMetric,
   language = DEFAULT_PARAMS.language,
   count = 30, // 30 hours of data (a day and 6 hours)
 } = {}) => {
-  return getApiUrl("forecast/hourly", { city, isMetric, language, count });
+  return getApiUrl("forecast/hourly", {
+    ...(longitude && latitude
+      ? { longitude, latitude }
+      : city
+      ? { city }
+      : { city: DEFAULT_PARAMS.city }),
+    isMetric,
+    language,
+    count,
+  });
 };
 
 export {

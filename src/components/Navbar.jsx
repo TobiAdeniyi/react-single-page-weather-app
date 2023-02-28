@@ -22,8 +22,6 @@ export default function Navbar() {
     navBarSearchToggleSubmissionHandler,
   } = useContext(NavigationContext);
 
-  const rankCities = (city, Fil) => {};
-
   return (
     <Container>
       <Row className="mb-4">
@@ -37,10 +35,12 @@ export default function Navbar() {
           >
             <InputGroup role="form">
               <FormControl
-                placeholder="London"
+                placeholder="Search"
                 aria-label="search"
                 aria-describedby="search"
-                onChange={(e) => setCity(e.target.value.toLocaleLowerCase())}
+                onChange={(e) =>
+                  setCity(e.target.value?.toLocaleLowerCase() ?? null)
+                }
               />
               {
                 // See: https://ericgio.github.io/react-bootstrap-typeahead/

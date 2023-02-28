@@ -75,17 +75,18 @@ export default function WeatherCard({ weatherResponse }) {
             {weatherResponse.tempUnit}.
           </Typography>
         )}
-        {weatherResponse?.feelsLikeBreakdown && (
-          <Typography variant="body2" color="text.secondary">
-            {feelsLikePeriods.map((period) => (
-              <p>
-                The {period.name} will feel like{" "}
-                {Math.round(weatherResponse.feelsLikeBreakdown?.[period.val])}{" "}
-                {weatherResponse.tempUnit}.
-              </p>
-            ))}
-          </Typography>
-        )}
+        {weatherResponse?.feelsLikeBreakdown &&
+          feelsLikePeriods.map((period) => (
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              key={`${period.name}-feels-like`}
+            >
+              The {period.name} will feel like{" "}
+              {Math.round(weatherResponse.feelsLikeBreakdown?.[period.val])}{" "}
+              {weatherResponse.tempUnit}.
+            </Typography>
+          ))}
       </CardContent>
     </Card>
   );

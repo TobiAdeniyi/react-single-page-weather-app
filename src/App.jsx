@@ -15,42 +15,47 @@ import {
 } from "./utils";
 
 import * as CitiesJsonModule from "../cities.json";
-
 const cities = CitiesJsonModule.default;
 
 const RouterContext = createContext();
 const NavigationContext = createContext();
 
 function App() {
-  const [city, setCity] = useState(DEFAULT_PARAMS.city);
+  const [city, setCity] = useState(null);
+  const [position, setPosition] = useState(null);
   const [filteredCities, setFilteredCities] = useState([]);
   const [isMetric, setIsMetric] = useState(DEFAULT_PARAMS.isMetric);
 
+  // define queried weather data
   const [currentWeatherResponse, setCurrentWeatherResponse] = useState(null);
   const [dailyForecastResponse, setDailyForecastResponse] = useState(null);
 
-  const navBarSearchToggleSubmissionHandler = () => {
-    console.log(filteredCities);
+  const navBarSearchToggleSubmissionHandler = ({ position = null } = {}) => {
+    const longitude = position?.coords.longitude;
+    const latitude = position?.coords.latitude;
     axios
-      .get(getWeatherApiUrl({ city, isMetric }))
+      .get(getWeatherApiUrl({ city, latitude, longitude, isMetric }))
       .then((res) => setCurrentWeatherResponse(res.data))
       .catch((error) => console.error(error));
     axios
-      .get(getDailyForecastApiUrl({ city, isMetric }))
+      .get(getDailyForecastApiUrl({ city, latitude, longitude, isMetric }))
       .then((res) => setDailyForecastResponse(res.data))
       .catch((error) => console.error(error));
   };
 
   useEffect(() => {
-    navBarSearchToggleSubmissionHandler();
+    navigator.geolocation.getCurrentPosition((position) => {
+      setPosition(position);
+      navBarSearchToggleSubmissionHandler({ position });
+    });
   }, []);
 
   useEffect(() => {
-    navBarSearchToggleSubmissionHandler();
-  }, [isMetric]);
+    navBarSearchToggleSubmissionHandler({ position });
+  }, [isMetric, position]);
 
   useEffect(() => {
-    setFilteredCities(rankIndex(city, cities));
+    setFilteredCities(rankIndex(city ?? "", cities));
   }, [city]);
 
   return (
